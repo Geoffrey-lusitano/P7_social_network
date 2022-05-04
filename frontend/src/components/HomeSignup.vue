@@ -38,33 +38,50 @@
 </template>
 
 <script>
+import axios from "axios"
+
 export default {
   name: "HomeSignup",
   props: {
     msg: String,
   },
-  data: () => {
+    data: () => {
       return {
           signUp: false,
+
+        }
+    },
+    data2: () => {
+        return {
           name: '',
           last_name: '',
           email: '',
           password: '',
           confirm_password:''
-      }
-  },
+        }
+
+    },
   methods: {
       handleSubmit () {
-          const data = {
-              name: this.name,
-              last_name: this.last_name,
-              email: this.email,
-              password: this.password,
-              confirm_password: this.confirm_password
+            const data2 = {
+                name: this.name,
+                last_name: this.last_name,
+                email: this.email,
+                password: this.password,
+                confirm_password: this.confirm_password
             };
-          console.log(data);
-      }
-  }
+            axios.post('http://localhost:8080', data2)
+                .then(
+                    res => {
+                        console.log(res)
+                    }
+                ).catch(
+                    err => {
+                        console.log(err)
+                    }
+                )
+        }
+    }
 };
 </script>
 
