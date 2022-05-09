@@ -6,7 +6,7 @@
                     <div class="overlay-right">
                         <h2>Bienvenue</h2>
                         <p>Merci de t'inscrire en remplisant tous les champs</p>
-                        <button class="invert" id="signIn" @click="signUp = !signUp">Inscription</button>
+                        <button class="invert" id="Login" @click="signUp = !signUp">Inscription</button>
                     </div>
                     <div class="overlay-left">
                         <h2>Bienvenue</h2>
@@ -15,15 +15,15 @@
                     </div>
                 </div>
             </div>
-            <form class="sign-in" action="#">
+            <form @submit.prevent="loginSubmit" class="Login" action="#">
                 <h2>Connexion au compte</h2>
                 <div>Entrez votre email et password</div>
-                <input type="email" placeholder="Email"/>
-                <input type="password" placeholder="Password"/>
+                <input type="email" v-model="email" placeholder="Email"/>
+                <input type="password" v-model="password" placeholder="Password"/>
                 <a href="#">Mot de passe oublié ?</a>
                 <button>Connexion</button>
             </form>
-                <form @submit.prevent="handleSubmit" class="sign-up" action="#">
+            <form @submit.prevent="handleSubmit" class="sign-up" action="#">
                 <h2>Creation du compte</h2>
                 <div>Renseignez les champs suivant</div>
                 <input type="text" v-model="name" placeholder="Prénom"/>
@@ -41,17 +41,17 @@
 import axios from "axios"
 
 export default {
-  name: "HomeSignup",
+  name: "Signup",
   props: {
     msg: String,
   },
     data: () => {
       return {
           signUp: false,
-
         }
     },
-    data2: () => {
+    // stockage des information de compte
+    dataSignup: () => {
         return {
           name: '',
           last_name: '',
@@ -59,18 +59,42 @@ export default {
           password: '',
           confirm_password:''
         }
-
     },
-  methods: {
-      handleSubmit () {
-            const data2 = {
+    // stokage des informations de login
+    dataLogin: () => {
+        email = '',
+        password = ''
+    },
+    methods: {
+        // recuperation des informations de compte
+        handleSubmit () {
+            const dataSignup = {
                 name: this.name,
                 last_name: this.last_name,
                 email: this.email,
                 password: this.password,
                 confirm_password: this.confirm_password
             };
-            axios.post('http://localhost:8080', data2)
+            // envoi des information de compte a l'api
+            axios.post('http://localhost:3000/api/auth/signup', dataSignup)
+                .then(
+                    res => {
+                        console.log(res)
+                    }
+                ).catch(
+                    err => {
+                        console.log(err)
+                    }
+                )
+        },
+        // recuperation des informations de compte login
+        loginSubmit () {
+            const dataLogin = {
+                email: this.email,
+                password: this.password
+            };
+            // envoie des informations de login a l'api
+            axios.post('http://localhost:3000/api/auth/login', dataLogin)
                 .then(
                     res => {
                         console.log(res)
@@ -175,6 +199,7 @@ export default {
         padding: 10px 40px;
         letter-spacing: 1px;
         text-transform: uppercase;
+        cursor: pointer;
         transition: transform .1s ease-in;
 
         &:active {
@@ -227,7 +252,7 @@ export default {
         }
     }
 
-    .sign-in {
+    .login {
         left: 0;
         z-index: 2;
     }
@@ -239,7 +264,7 @@ export default {
     }
 
     .sign-up-active {
-        .sign-in {
+        .login {
             transform: translateX(100%);
         }
         .sign-up {

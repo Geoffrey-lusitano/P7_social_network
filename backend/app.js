@@ -9,9 +9,19 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
-  });  
+});  
+
+// Chargement du fichier contenant les variables d'env
+const dotenv = require('dotenv');
+const result = dotenv.config();
+
+// Chargement des routes
+const userRoutes = require('./routes/user');
 
 // exécute express
 app.use(express.json());
+
+// user 
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
