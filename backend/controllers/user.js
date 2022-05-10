@@ -41,7 +41,6 @@ exports.signup = async (req, res) => {
             return res.status(401).json({ error: "Merci d'utilisé une adresse email"})
         }
     }
-    
 };
 
 exports.login = async (req, res) => {
@@ -51,24 +50,25 @@ exports.login = async (req, res) => {
             email: req.body.email
         },
         select: {
-            email: true
+            email: true,
+            password: true,
         }
     })
     if (!userExists) {
         return res.status(401).json({ error: "Merci de créer un compte avant de vous connecter"})
-    } else {
-        // on compare le mdp entré avec le hash dans la base de données
-        const valid = await bcrypt.compare(req.body.password, user.password)
-        if (!valid) {
-            return res.status(401).json({ error: 'Mot de passe incorrect !'})
-        } else {
-            res.status(200).json({
-                userId: user._id, 
-                // création d'un token grace a l'userid + la cle secrete avec une durée de validité de 24h
-                token: jwt.sign({ userId: user._id },
-                    `${process.env.MY_TOKEN}`,
-                    { expiresIn:'24h'})});
-        }
+    } 
 
-    }
+    //return res.status(200).json({user: userExists});
+    // on compare le mdp entré avec le hash dans la base de données
+    const valid = await bcrypt.compare(req.body.password, userExists.password)
+    if (!valid) {
+        return res.status(401).json({ error: 'Mot de passe incorrect !'})
+    } 
+
+    return res.status(200).json({
+        userId: user._id, 
+        // création d'un token grace a l'userid + la cle secrete avec une durée de validité de 24h
+        token: jwt.sign({ userId: user._id },
+            `${process.env.MY_TOKEN}`,
+            { expiresIn:'24h'})});
 }

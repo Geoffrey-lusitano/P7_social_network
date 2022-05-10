@@ -1,52 +1,46 @@
 <template>
     <div class="main">
         <div class="container">
-            <form @submit.prevent="handleSubmit" class="sign-up" action="#">
-                <input type="text" v-model="name" placeholder="Prénom"/>
-                <input type="text" v-model="last_name" placeholder="Nom de famille"/>
+            <form @submit.prevent="loginSubmit" class="Login" action="#">
                 <input type="email" v-model="email" placeholder="Email"/>
                 <input type="password" v-model="password" placeholder="Password"/>
-                <input type="password" v-model="confirm_password" placeholder="Confirm Password"/>
-                <button>Inscription</button>
-                <button @click="$router.push('login')">Connexion</button>
+                <button>Connexion</button>
+                <a href="#">Mot de passe oublié ?</a>
+                <button class="btn btn-secondary" @click="$router.push('signup')">Créer un compte</button>
             </form>
         </div>
     </div>
+
 </template>
 
 <script>
 import axios from "axios"
 
 export default {
-  name: "Signup",
+  name: "Login",
   props: {
     msg: String,
   },
-// stockage des information de compte
-    dataSignup: () => {
+    // stokage des informations de login
+    dataLogin: () => {
         return {
-          name: '',
-          last_name: '',
-          email: '',
-          password: '',
-          confirm_password:''
+            email:'',
+            password:''
         }
     },
     methods: {
-        // recuperation des informations de compte
-        handleSubmit () {
-            const dataSignup = {
-                name: this.name,
-                last_name: this.last_name,
+        // recuperation des informations de compte login
+        loginSubmit () {
+            const dataLogin = {
                 email: this.email,
-                password: this.password,
-                confirm_password: this.confirm_password
+                password: this.password
             };
-            // envoi des information de compte a l'api
-            axios.post('http://localhost:3000/api/auth/signup', dataSignup)
+            // envoie des informations de login a l'api
+            axios.post('http://localhost:3000/api/auth/login', dataLogin)
                 .then(
                     res => {
-                        console.log(res)
+                        console.log(res);
+                        this.$router.push('actu');
                     }
                 ).catch(
                     err => {
@@ -54,12 +48,12 @@ export default {
                     }
                 )
         },
-    },
+    }
 };
 </script>
 
 <style lang="scss" scoped>
-   .main {
+    .main {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -128,4 +122,3 @@ export default {
         }
     }
 </style>
-
