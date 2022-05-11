@@ -16,6 +16,19 @@
 
   </div>
 </template>
+<script>
+// @ is an alias to /src
+import axios from "axios"
+//import Signup from "@/components/Signup.vue";
+
+export default {
+  name: "ActuView",
+  components: {
+
+  },
+
+};
+</script>
 
 <style lang="scss" scoped>
   // HEADER

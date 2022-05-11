@@ -17,11 +17,11 @@ const result = dotenv.config();
 
 // Chargement des routes
 const userRoutes = require('./routes/user');
-
+const postRoutes = require('./routes/post');
 // exécute express
 app.use(express.json());
 
 // user 
 app.use('/api/auth', userRoutes);
-
+app.use('/api/post', postRoutes);
 module.exports = app;
