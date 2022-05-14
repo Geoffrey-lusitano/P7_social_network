@@ -18,10 +18,11 @@
 import axios from "axios"
 
 export default {
-  name: "Signup",
-  props: {
-    msg: String,
-  },
+    name: "Signup",
+    props: {
+        msg: String,
+    },
+
 // stockage des information de compte
     dataSignup: () => {
         return {
@@ -34,25 +35,17 @@ export default {
     },
     methods: {
         // recuperation des informations de compte
-        handleSubmit () {
-            const dataSignup = {
+        // envoi des information de compte a l'api
+        async handleSubmit () {
+            const res = await axios.post('http://localhost:3000/api/auth/signup', {
                 name: this.name,
                 last_name: this.last_name,
                 email: this.email,
                 password: this.password,
                 confirm_password: this.confirm_password
-            };
-            // envoi des information de compte a l'api
-            axios.post('http://localhost:3000/api/auth/signup', dataSignup)
-                .then(
-                    res => {
-                        console.log(res)
-                    }
-                ).catch(
-                    err => {
-                        console.log(err)
-                    }
-                )
+            });
+            //console.log(res);
+            this.$router.push('/login');            
         },
     },
 };

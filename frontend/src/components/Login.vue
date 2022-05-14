@@ -30,23 +30,17 @@ export default {
     },
     methods: {
         // recuperation des informations de compte login
-        loginSubmit () {
-            const dataLogin = {
+        // envoie des informations de login a l'api
+        async loginSubmit () {
+            const response = await axios.post('http://localhost:3000/api/auth/login', {
                 email: this.email,
                 password: this.password
-            };
-            // envoie des informations de login a l'api
-            axios.post('http://localhost:3000/api/auth/login', dataLogin)
-                .then(
-                    res => {
-                        console.log(res);
-                        this.$router.push('actu');
-                    }
-                ).catch(
-                    err => {
-                        console.log(err)
-                    }
-                )
+            });
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', response.data.userId);
+            //this.$store.dispatch('user', response.data.user);
+            this.$router.push('actu');
+
         },
     }
 };

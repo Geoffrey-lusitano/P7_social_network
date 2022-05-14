@@ -3,14 +3,15 @@
     <header class="topbar">
       <a href="#" class="topbar-logo"><img alt="Groupomania logo" src="../assets/icon-left-font-monochrome-white.svg" /></a>
       <nav class="topbar-nav">
-        <a href="#">Accueil</a>
+        <a href="/actu">Accueil</a>
         <a href="#">Créer un post</a>
         <a href="#">Profil</a>
-        <a href="#">Deconnexion</a>
+        <a  href="javascript:void(0)" @click="handleUnConect">Deconnexion</a>
       </nav>
     </header>
     <div class="container">
       <h1>Voici les derniers post</h1>
+      <Home/>
     </div>
 
 
@@ -19,12 +20,18 @@
 <script>
 // @ is an alias to /src
 import axios from "axios"
-//import Signup from "@/components/Signup.vue";
+import Home from "@/components/Home.vue";
 
 export default {
   name: "ActuView",
-  components: {
-
+    components: {
+      Home,
+  },
+  method: {
+    handleUnConect() {
+        localStorage.removeItem('token');
+        this.$router.push('/login');
+    }
   },
 
 };

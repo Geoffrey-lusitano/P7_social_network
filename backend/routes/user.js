@@ -13,5 +13,6 @@ const passwordValidator = require('../middleware/password-validator');
 router.post('/signup', passwordValidator, userCtrl.signup);
 // Définition de la route login et execute le middleware login
 router.post('/login', userCtrl.login);
-
+router.get('/user', userCtrl.getAllUsers);
+router.get('/user/:id', userCtrl.getOneUser);
 module.exports = router;

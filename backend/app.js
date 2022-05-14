@@ -18,10 +18,12 @@ const result = dotenv.config();
 // Chargement des routes
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
+const commentRoutes = require('./routes/comment');
 // exécute express
 app.use(express.json());
 
 // user 
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
+app.use('/api/comment', commentRoutes);
 module.exports = app;

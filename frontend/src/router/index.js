@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import LoginView from "../views/LoginView.vue";
 import axios from "axios"
 
 // const token ="";
@@ -31,8 +31,8 @@ const routes = [
   // ROUTES USERS
   {
     path: "/login",
-    name: "home",
-    component: HomeView,
+    name: "login",
+    component: LoginView,
     meta: { public: true }
   },
   {
