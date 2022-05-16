@@ -3,15 +3,18 @@
     <header class="topbar">
       <a href="#" class="topbar-logo"><img alt="Groupomania logo" src="../assets/icon-left-font-monochrome-white.svg" /></a>
       <nav class="topbar-nav">
-        <a href="/actu">Accueil</a>
-        <a href="#">Créer un post</a>
-        <a href="#">Profil</a>
-        <a  href="javascript:void(0)" @click="handleUnConect">Deconnexion</a>
+        <form @submit.prevent="handleUnConect" action="#">
+          <a href="/actu">Accueil</a>
+          <a href="#">Profil</a>
+          <button >Deconnexion</button>
+        </form>
       </nav>
     </header>
     <div class="container">
       <h1>Voici les derniers post</h1>
       <Home/>
+      <PostCreate/>
+      <PostList/>
     </div>
 
 
@@ -21,14 +24,18 @@
 // @ is an alias to /src
 import axios from "axios"
 import Home from "@/components/Home.vue";
-
+import PostList from "@/components/PostList.vue";
+import PostCreate from "@/components/PostCreate.vue";
 export default {
   name: "ActuView",
     components: {
       Home,
+      PostList,
+      PostCreate,
   },
-  method: {
+  methods: {
     handleUnConect() {
+      console.log("je veux me deco");
         localStorage.removeItem('token');
         this.$router.push('/login');
     }
@@ -69,12 +76,32 @@ export default {
   .topbar-nav a:active {
     color: #fff;
   }
+  button {
+      border-radius: 3px;
+      border: 1px solid #D05059;
+      background-color: #D05059;
+      color: #fff;
+      font-weight: bold;
+      padding: 15px 5px;
+      margin: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .1s ease-in;
+      &:active {
+          transform: scale(.9);
+      }
+      &:focus {
+          outline: none;
+      }
+  }
   // CONTAINER
   .container {
     padding: 0 15px;
     max-width: 1050px;
     margin: 0 auto;
   }
+
 
   @media only screen and (min-width: 925px) {
     .topbar {

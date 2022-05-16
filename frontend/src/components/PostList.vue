@@ -1,56 +1,74 @@
 <template>
     <div class="main">
-        <div class="card">
-            <header class="card-header card-header-avatar">
-                <img src="" class="card-header-picture">
+        <div  v-for="post in posts" class="card">
+            <header class="card-header">
                 <div class="card-title">
-                    {{ title }}
+                    {{ post.user.name }} {{ post.user.last_name }}
                 </div>
                 <div class="card-date">
-                    {{ createdAt }}
-                </div>
-                <div class="card-updated">
-                    {{ updatedAt }}
+                    créer le :{{ post.createdAt }}
                 </div>
             </header>
             <div class="card-body">
+                <h2 class="card-title">{{ post.title }}</h2>
                 <p class="card-content">
-                    {{ content }}
+                    {{ post.content }}
                 </p>
                 <p>
-                    {{ description }}
+                    
                 </p>
-                <img src= {{ attachment }} class="fullwidth">
+                <img src=''  class="fullwidth">
             </div>
             <div class="card-footer">
                 <div class="card-comments">
-
+                    yoyoyoyo
                 </div>
             </div>
         </div>
     </div>
 </template>
 
+<script>
+import axios from "axios"
+    export default {
+        name: 'PostList',
+        data () {
+            return {
+                posts: []
+            }
+        },
+        async created () {
+            console.log('ok');
+            const response = await axios.get('http://localhost:3000/api/post', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            this.posts = response.data;
+            console.log(this.posts); 
+        },  
+    }
+</script>
+
 <style lang="scss" scoped>
 // HEADER
 .card {
     border: 1px solid #DBDBDB;
     background: #FFFF;
-    border-radius: 3px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 .card-header {
     padding: 10px;
-    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(15,52,113, 0.6);
+    margin: 10px;
+    border-radius: 3px;
 }
-.card-header-avatar {
-    padding-left: 65px;
-}
-.card-avatar {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 10px;
-}
+
+
 .card-title {
     font-weight: bold;
     color: #000;

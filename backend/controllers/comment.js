@@ -7,7 +7,7 @@ exports.readComment = async (req, res, next) => {
         // const posts = await prisma.post.findMany({ 
         const comments = await comment.findMany({ 
             orderBy: { createdAt: 'desc'},
-            include: { user: true },
+            // include: { user: true },
         });
         res.json(comments);
     } catch (err) {
@@ -19,9 +19,9 @@ exports.createComment = async (req, res, next) => {
     try {
         const { content, userId, postId } = req.body;
         const result = await comment.create({ 
-            input: {
+            data: {
                 content,
-                //user : { connect: { id: userId}},
+                user : { connect: { id: userId}},
                 post: { connect: {id: postId }},
             },
         });

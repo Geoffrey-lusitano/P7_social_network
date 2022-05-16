@@ -10,7 +10,6 @@ function getUser (req) {
     const userId = decodedToken.userId;
     return userId;
 }
-
 exports.readPost = async (req, res, next) => {
     try {
         // const posts = await prisma.post.findMany({ 
@@ -27,7 +26,7 @@ exports.readPost = async (req, res, next) => {
 
 exports.createPost = async (req, res, next) => {
     try {
-        const { title, content, userId } = req.body;
+        const { title, content, userId, } = req.body;
         const result = await post.create({
             data: {
                 title,
@@ -43,18 +42,26 @@ exports.createPost = async (req, res, next) => {
 
 exports.modifyPost = async (req, res, next) => {
     try {
+
         const { id, title, content, userId } = req.body;
-        const updatePost = await post.update({
-            where: {
-                id: id,
-            },
-            data: {
-                title: title,
-                content: content,
-                user: { connect: { id: userId} },
-            },
+        const postExist = await post.findUnique ({
+            where: { id: id },
         });
-        res.status(201).json({updatePost});
+        //res.status(200).json({postExist});
+        if (postExist) {
+            const updatePost = await post.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    title: title,
+                    content: content,
+                    user: { connect: { id: userId} },
+                },
+            });
+            res.status(201).json({updatePost});
+        }
+
     } catch (err) {
         res.status(400).json({ error: err});
     }
@@ -68,7 +75,7 @@ exports.deletePost = async (req, res, next) => {
                 id: parseInt(id),
             },
         });
-        res.json({deletePost});
+        res.status(201).json({deletePost});
     } catch (err) {
         res.status(400).json({ error: err});
     }

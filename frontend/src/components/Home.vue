@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h3> Hello </h3>
-        <h3 v-if="user">{{ user.name }}  {{ user.last_name }}</h3>
+        <h3 v-if="user">Hello {{ user.name }}  {{ user.last_name }}</h3>
     </div>
 </template>
 
@@ -35,3 +34,7 @@
         
     }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
