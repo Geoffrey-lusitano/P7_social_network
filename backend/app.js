@@ -11,6 +11,8 @@ app.use((req, res, next) => {
     next();
 });  
 
+// Donne acces aux chemins du systeme de fichier
+const path = require('path');
 // Chargement du fichier contenant les variables d'env
 const dotenv = require('dotenv');
 const result = dotenv.config();
@@ -23,7 +25,7 @@ const commentRoutes = require('./routes/comment');
 app.use(express.json());
 
 // user 
-//app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);

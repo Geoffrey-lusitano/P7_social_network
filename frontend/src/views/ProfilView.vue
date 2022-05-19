@@ -10,13 +10,7 @@
         </form>
       </nav>
     </header>
-    <div class="container">
-      <h1>Voici les derniers post</h1>
-      <Home/>
-      <PostCreate/>
-      <PostList/>
 
-    </div>
 
 
   </div>
@@ -25,15 +19,12 @@
 // @ is an alias to /src
 import axios from "axios"
 import Home from "@/components/Home.vue";
-import PostList from "@/components/PostList.vue";
-import PostCreate from "@/components/PostCreate.vue";
+
 
 export default {
   name: "ActuView",
     components: {
-      Home,
-      PostList,
-      PostCreate,
+
 
   },
   methods: {
@@ -104,7 +95,23 @@ export default {
     padding: 0 15px;
     max-width: 1050px;
     margin: 0 auto;
+    display: block;
+
   }
+  h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+      display: flex;
+      justify-content: space-between;
+  }
+  .card-content {
+      display: flex;
+      flex-direction: column;
+  }
+
 
 
   @media only screen and (min-width: 925px) {

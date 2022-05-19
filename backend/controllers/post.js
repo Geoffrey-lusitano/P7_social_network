@@ -25,19 +25,28 @@ exports.readPost = async (req, res, next) => {
 }
 
 exports.createPost = async (req, res, next) => {
-    try {
+
         const { title, content, userId, } = req.body;
+        console.log(req.file);
+        console.log('testcrestepost');
+
+        const newPost = {
+            title,
+            content,
+            user: { connect: { id: parseInt(userId)} },
+            attachment: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }
         const result = await post.create({
-            data: {
-                title,
-                content,
-                user: { connect: { id: userId} },
-            },
+            data: 
+                newPost,
+             
         });
         res.json(result);
-    } catch (err) {
-        res.status(400).json({ error: err});
-    }
+        console.log(result);
+        console.log('fincreatepost');
+
+
+
 }
 
 exports.modifyPost = async (req, res, next) => {

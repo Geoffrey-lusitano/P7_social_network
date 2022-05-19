@@ -18,6 +18,9 @@ exports.readComment = async (req, res, next) => {
 exports.createComment = async (req, res, next) => {
     try {
         const { content, userId, postId } = req.body;
+        console.log(content);
+        console.log(userId);
+        console.log(postId);
         const result = await comment.create({ 
             data: {
                 content,
@@ -28,11 +31,46 @@ exports.createComment = async (req, res, next) => {
         res.json(result);
     } catch (err) {
         res.status(400).json({ error: err});
+    }    
+}
+
+exports.modifyComment = async (req, res, next) => {
+    try {
+
+        const { id, content, userId, postId } = req.body;
+        const commentExist = await comment.findUnique ({
+            where: { id: id },
+        });
+        //res.status(200).json({postExist});
+        if (commentExist) {
+            const updateComment = await comment.update({
+                where: {
+                    id: id,
+                },
+                data: {
+
+                    content: content,
+                    user: { connect: { id: userId} },
+                    post: { connect: { id: postId} },
+                },
+            });
+            res.status(201).json({updateComment});
+        }
+
+    } catch (err) {
+        res.status(400).json({ error: err});
     }
 }
-exports.modifyComment = async (req, res, next) => {
-
-}
 exports.deleteComment = async (req, res, next) => {
-
+    try {
+        const id = req.params.id;
+        const deleteComment = await comment.delete({
+            where: {
+                id: parseInt(id),
+            },
+        });
+        res.status(201).json({deleteComment});
+    } catch (err) {
+        res.status(400).json({ error: err});
+    }
 }

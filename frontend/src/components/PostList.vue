@@ -14,28 +14,37 @@
                 <p class="card-content">
                     {{ post.content }}
                 </p>
-                <p>
-                    
-                </p>
-                <img src=''  class="fullwidth">
+                <img :src='post.attachment'  class="fullwidth">
             </div>
             <div class="card-footer">
+
                 <div class="card-comments">
-                    yoyoyoyo
+                    <CommentList/>
+                </div>
+                <div class="card-comment-create">
+                    <CommentCreate/>
                 </div>
             </div>
+           
         </div>
     </div>
 </template>
 
 <script>
 import axios from "axios"
+import CommentList from "@/components/CommentList.vue";
+import CommentCreate from "@/components/CommentCreate.vue";
     export default {
         name: 'PostList',
+        components: {
+            CommentList,
+            CommentCreate,
+        },
         data () {
             return {
-                posts: []
+                posts: [],
             }
+
         },
         async created () {
             console.log('ok');
@@ -94,17 +103,6 @@ import axios from "axios"
 .card-body p:last-child {
     margin-bottom: 0;
 }
-// FOOTER
-.card-footer {
-    border-top: 1px solid #DBDBDB;
-    background: #FBFBFB;
-    display: flex;
-    padding: 0 10px;
-    font-size: 12px;
-    color: #DBDBDB;
-}
-.card-comments {
-    margin-left: auto;
-}
+
 
 </style>

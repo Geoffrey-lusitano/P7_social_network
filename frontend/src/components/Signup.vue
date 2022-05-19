@@ -37,7 +37,7 @@ export default {
         // recuperation des informations de compte
         // envoi des information de compte a l'api
         async handleSubmit () {
-            const res = await axios.post('http://localhost:3000/api/auth/signup', {
+            const response = await axios.post('http://localhost:3000/api/auth/signup', {
                 name: this.name,
                 last_name: this.last_name,
                 email: this.email,

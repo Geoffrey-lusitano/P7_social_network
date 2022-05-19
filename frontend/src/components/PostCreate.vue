@@ -15,13 +15,12 @@
                         <input type="text" class="input-content" v-model="content" placeholder="Contenu">
                     </p>
                     <div class="card-body-button">
-                        <button class="btn btn-secondary">
+                        <label class="btn btn-secondary">
                             Ajouter une image
-                            <img src=''  class="fullwidth">
-                        </button>
+                            <input type="file" @change="onFileSelected"/>
+                        </label>
                         <button type="submit" class="btn " @clik="postData">
                             Publier
-                            <img src=''  class="fullwidth">
                         </button>
                     </div>
                 </form>
@@ -38,26 +37,32 @@ import axios from "axios"
             return {
                 title: '',
                 content: '',
+                userId: '',
+                selectdFile: null,
             }
         },
         methods: {
-            // async createPost(req) {
-            //     const token = Authorization.split(' ')[1];
+            onFileSelected (event) {
+                this.selectedFile = event.target.files[0];
+                console.log(this.selectedFile);
+            },
+            async createPost() {
+                const attachment = new FormData()
+                attachment.append('files', this.selectdFile)
+                console.log('ok')
+                const id = localStorage.getItem('userId');
+                const response = await axios.post('http://localhost:3000/api/post', {
+                    title: this.title,
+                    content: this.content,
+                    userId: parseInt(id),
+                    attachment,
+                }, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
+                });
+            },
 
-            //     // dechiffre le token a l'aide de la clé secrete et du token presant dans authorization
-            //     const decodedToken = jwt.verify(token, `${process.env.MY_TOKEN}`);
-            //     console.log('decodedToken');
-            //     const response = await axios.post('http://localhost:3000/api/post', {
-
-            //         headers: {
-            //             Authorization: 'Bearer ' + localStorage.getItem('token')
-            //         },
-                    
-            //         title: this.title,
-            //         content: this.content,
-            //         userId: decodedToken.userId
-            //     });
-            // }
         }
     }
 </script>
@@ -110,6 +115,9 @@ import axios from "axios"
 .card-body p:last-child {
     margin-bottom: 0;
 }
+input[type="file"] {
+    display: none;
+}
 input {
     width: calc(100% - 10px);
     overflow: hidden;
@@ -128,7 +136,7 @@ input {
 
     height: 100px;
 }
-button {
+button, label {
     border-radius: 3px;
     border: 1px solid #0F3471;
     background-color: #0F3471;

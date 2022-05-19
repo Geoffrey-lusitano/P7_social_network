@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
     filename: (req, file, callback) => {
         // Generation du nom avec le nom d'origine du fichier et remplacement des possibles espaces par des _
         const name = file.originalname.split(' ').join('_');
+        
         // donner une extention au fichier via le minetype
         const extension = MINE_TYPES[file.mimetype];
         console.log(extension);
