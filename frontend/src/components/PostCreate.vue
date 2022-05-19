@@ -47,20 +47,24 @@ import axios from "axios"
                 console.log(this.selectedFile);
             },
             async createPost() {
-                const attachment = new FormData()
-                attachment.append('files', this.selectdFile)
+                const formData = new FormData();
+                formData.append( 'image', this.selectedFile, this.selectedFile.name );
+
                 console.log('ok')
+                console.log(formData);
                 const id = localStorage.getItem('userId');
                 const response = await axios.post('http://localhost:3000/api/post', {
                     title: this.title,
                     content: this.content,
                     userId: parseInt(id),
-                    attachment,
+                    attachment: formData,
+
                 }, {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token')
                     },
                 });
+                console.log(response);
             },
 
         }
