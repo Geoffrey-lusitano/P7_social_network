@@ -10,6 +10,7 @@
         </form>
       </nav>
     </header>
+    <Profil/>
 
 
 
@@ -19,11 +20,12 @@
 // @ is an alias to /src
 import axios from "axios"
 import Home from "@/components/Home.vue";
-
+import Profil from "@/components/Profil.vue";
 
 export default {
-  name: "ActuView",
+  name: "ProfilView",
     components: {
+      Profil,
 
 
   },

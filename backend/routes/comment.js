@@ -8,6 +8,7 @@ const auth = require('../middleware/auth');
 // ROUTES
 // Route pour afficher les post
 router.get('/', auth, commentCtrl.readComment);
+router.get('/:id', auth, commentCtrl.readOnComment);
 // Route pour créer un post
 router.post('/', auth, commentCtrl.createComment);
 // Route pour modifier un post

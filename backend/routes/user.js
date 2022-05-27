@@ -2,6 +2,7 @@
 const express = require('express');
 // Permet d'enregistrer des routes pour acceder aux middleware
 const router = express.Router();
+const auth = require('../middleware/auth');
 const { PrismaClient } = require('@prisma/client');
 const { user } = new PrismaClient();
 
@@ -15,4 +16,6 @@ router.post('/signup', passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.get('/user', userCtrl.getAllUsers);
 router.get('/user/:id', userCtrl.getOneUser);
+// Route pour supprimer un post
+router.delete('/user/:id', userCtrl.deleteUser);
 module.exports = router;

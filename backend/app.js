@@ -10,7 +10,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });  
-
+// Sécurité des headers HTTP 
+const helmet = require('helmet');
 // Donne acces aux chemins du systeme de fichier
 const path = require('path');
 // Chargement du fichier contenant les variables d'env
@@ -23,7 +24,10 @@ const postRoutes = require('./routes/post');
 const commentRoutes = require('./routes/comment');
 // exécute express
 app.use(express.json());
-
+// Execute helmets
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+  }));
 // user 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);

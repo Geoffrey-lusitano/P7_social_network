@@ -1,78 +1,99 @@
 <template>
-    <div class="main">
-        <div class="line"></div>
-        <h2> Commentaires </h2>
-        <div  v-for="comment in comments" class="card">
-                <h3 class="card-user">
-                    Name of user {{ comment.userId }}
-                </h3>
-                <p class="card-content">
-                    {{ comment.content }}
-                </p>
+  <div class="main">
+    <div class="line"></div>
+    <h2>Commentaires</h2>
+    <div v-for="comment in comments" class="card" @change="sendComment">
+      <div class="card-body" v-if="postid === comment.postId">
+        <div>
+          <h3 class="card-user">
+            {{ comment.user.name }} {{ comment.user.last_name }}
+          </h3>
+          <p class="card-content">{{comment.id}} {{ comment.content }}</p>
         </div>
+        <button v-if="user == 13" :id="comment.id" class="card-btn" @click="deletePost">Supprimer le com </button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import axios from "axios"
-    export default {
-        name: 'CommentList',
-        data () {
-            return {
-                comments: []
-            }
-        },
-        async created () {
-            console.log('ok');
-            const response = await axios.get('http://localhost:3000/api/comment', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            });
-            this.comments = response.data;
-            console.log(this.comments); 
-        },  
-    }
+import axios from "axios";
+export default {
+  name: "CommentList",
+  props: ["postid"],
+  data() {
+    return {
+      comments: [],
+      user: localStorage.getItem("userId"),
+    };
+  },
+  async created() {
+    const response = await axios.get("http://localhost:3000/api/comment", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    this.comments = response.data;
+  },
+  methods: {
+    sendComment() {
+      this.$emit("sendd", this.comment);
+    },
+        async deletePost(event) {
+      const id = event.target.id;
+      console.log("id", id);
+      const response = await axios.delete(
+        `http://localhost:3000/api/comment/${id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 // HEADER
 .main {
-    
-    margin: 10px;
+  margin: 10px;
 }
 .line {
-    background-color: rgba(208,80,89,0.5);
-    height: 10px;
-    border-radius: 5px;
+  background-color: rgba(208, 80, 89, 0.5);
+  height: 10px;
+  border-radius: 5px;
 }
 h2 {
-    font-size: 1.1rem;
-    margin: 0;
-    color: rgba(208,80,89);
+  font-size: 1.1rem;
+  margin: 0;
+  color: rgba(208, 80, 89);
 }
 .card {
-    //border: 1px solid rgba(208,80,89,0.5);
-    border-radius: 5px;
-    display:flex;
-    flex-direction: column;
-    padding: 0 10px;
+  //border: 1px solid rgba(208,80,89,0.5);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
 
-    //margin-bottom: 1px;
+  //margin-bottom: 1px;
+}
+.card-body {
+  display: flex;
+  justify-content:space-between;
 }
 
 .card-user {
-    font-style: italic;
-    font-size: 0.9rem;
-    color: rgba(208,80,89);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: rgba(208, 80, 89);
 
-    margin: 0;
+  margin: 0;
 }
 
 .card-content {
-        margin: 0;
-        font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.9rem;
 }
-
-
 </style>

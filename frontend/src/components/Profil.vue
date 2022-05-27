@@ -5,19 +5,21 @@
         <div class="card">
             <div class="card-content">
                 <div class="nom">
-                    Nom : 
+                    Nom : {{user.last_name}}
                 </div>
                 <div class="last_name">
-                    Prénom : 
+                    Prénom : {{user.name}}
                 </div>
                 <div class="email">
-                    Email :
+                    Email : {{user.email}}
                 </div>
 
             </div>
-            <button>
-                Supprimer mon compte
-            </button>
+            <form @submit.prevent="deleted" class="form">
+                <button type="submit" class="btn btn-primary" @clik="deteledData;">
+                    Supprimer mon compte
+                </button>
+            </form>
         </div>
     </div>
     </div>
@@ -29,37 +31,60 @@ import axios from "axios"
         name: 'Profil',
         data () {
             return {
-                user: null
+                user: '',
             }
         },
         
         async created () {
             const id = localStorage.getItem('userId');
-            const response = await axios.get(`http://localhost:3000/api/auth/user/${id}`, { 
+            const response = await axios.get(`http://localhost:3000/api/auth/user/${id}`, 
+            { 
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
                 
             });
-            //this.$store.dispatch('user', response.data);
             console.log('ici');
             this.user = response.data;   
         },
+        methods: {
+            async deleted () {
+                const id = localStorage.getItem('userId');
+                const response = await axios.delete(`http://localhost:3000/api/auth/user/${id}`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+                this.user = response.data;
+                localStorage.removeItem('userId');
+                localStorage.removeItem('token');
+                this.$router.push('/login');
+                console.log('deleted');
+
+            },
+        }
+
+
+
     }
 </script>
 
 <style lang="scss" scoped>
-// HEADER
 .card {
     border: 1px solid #DBDBDB;
     background: #FFFF;
     border-radius: 5px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 // BODY 
-.card-body {
+.card-content {
     padding: 0 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 input[type="file"] {
