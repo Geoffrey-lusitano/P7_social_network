@@ -8,9 +8,16 @@
           <h3 class="card-user">
             {{ comment.user.name }} {{ comment.user.last_name }}
           </h3>
-          <p class="card-content">{{comment.id}} {{ comment.content }}</p>
+          <p class="card-content">{{ comment.id }} {{ comment.content }}</p>
         </div>
-        <button v-if="user == 13" :id="comment.id" class="card-btn" @click="deletePost">Supprimer le com </button>
+        <button
+          v-if="user == 13"
+          :id="comment.id"
+          class="card-btn"
+          @click="deleteComment"
+        >
+          Supprimer le com
+        </button>
       </div>
     </div>
   </div>
@@ -20,7 +27,7 @@
 import axios from "axios";
 export default {
   name: "CommentList",
-  props: ["postid"],
+  props: ["postid", "postComments"],
   data() {
     return {
       comments: [],
@@ -28,28 +35,34 @@ export default {
     };
   },
   async created() {
-    const response = await axios.get("http://localhost:3000/api/comment", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-    this.comments = response.data;
+    this.emitter.on("comment-created", this.loadComments);
+
+    this.loadComments();
+
   },
   methods: {
-    sendComment() {
-      this.$emit("sendd", this.comment);
+    async loadComments() {
+      const response = await axios.get("http://localhost:3000/api/comment", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      this.comments = response.data;
     },
-        async deletePost(event) {
+    async deleteComment(event) {
       const id = event.target.id;
       console.log("id", id);
-      const response = await axios.delete(
-        `http://localhost:3000/api/comment/${id}`,
-        {
+      const response = await axios
+        .delete(`http://localhost:3000/api/comment/${id}`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      );
+        })
+        .then((response) => {
+          if (response.status == 201) {
+            this.emitter.emit("comment-created");
+          }
+        });
     },
   },
 };
@@ -81,7 +94,7 @@ h2 {
 }
 .card-body {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .card-user {

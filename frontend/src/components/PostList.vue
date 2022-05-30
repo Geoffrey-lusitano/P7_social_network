@@ -25,7 +25,7 @@
       </div>
       <div class="card-footer">
         <div class="card-comments">
-          <CommentList :postid="post.id" @sendd="refresh" />
+          <CommentList :postid="post.id" />
         </div>
         <div class="card-comment-create">
           <CommentCreate :id="post.id" />
@@ -53,30 +53,35 @@ export default {
   },
 
   async created() {
-    console.log("ok");
-    const response = await axios.get("http://localhost:3000/api/post", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-    this.posts = response.data;
+    this.emitter.on("post-refresh", this.loadPosts);
+    this.emitter.on("comment-created", this.loadPosts);
+
+    this.loadPosts();
   },
 
   methods: {
-    refresh(value) {
-      this.posts = value;
+    async loadPosts() {
+      const response = await axios.get("http://localhost:3000/api/post", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      this.posts = response.data;
     },
     async deletePost(event) {
       const id = event.target.id;
       console.log("id", id);
-      const response = await axios.delete(
-        `http://localhost:3000/api/post/${id}`,
-        {
+      const response = await axios
+        .delete(`http://localhost:3000/api/post/${id}`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      );
+        })
+        .then((response) => {
+          if (response.status == 201) {
+            this.emitter.emit("post-refresh");
+          }
+        });
     },
   },
 };

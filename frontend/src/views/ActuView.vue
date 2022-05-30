@@ -1,5 +1,5 @@
 <template>
-  <div class="actu">
+  <div class="actu" @post-created="refresh">
     <header class="topbar">
       <a href="#" class="topbar-logo"
         ><img

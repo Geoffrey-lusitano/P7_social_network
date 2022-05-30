@@ -113,45 +113,38 @@ exports.modifyPost = async (req, res, next) => {
 };
 
 exports.deletePost = async (req, res, next) => {
-    const id = parseInt(req.params.id);
-    const postExist = await post.findUnique({
-      where: { id: parseInt(id) },
-    });
-    //res.status(200).json({postExist});
-    if (postExist) {
-      console.log(postExist);
-      const user = parseInt(postExist.userId);
-      console.log(user);
-      console.log("getuser", getUser(req));
-      console.log("userId", user);
-      if (user === getUser(req) || getUser(req) === 13) {
-        if (req.file) {
-          const filename = postExist.attachment.split("images")[1];
-          fs.unlink(`images/${filename}`, (err) => {
-            if (err) throw err;
-          });
-          const id = req.params.id;
-          const deletePost = await post.delete({
-            where: {
-              id: parseInt(id),
-            },
-          });
-          res.status(201).json({ deletePost });
-        } else {
-            const id = req.params.id;
-            const deletePost = await post.delete({
-              where: {
-                id: parseInt(id),
-              },
-            });
-            res.status(201).json({ deletePost });
-        }
+  const id = parseInt(req.params.id);
+  const postExist = await post.findUnique({
+    where: { id: parseInt(id) },
+  });
+  if (postExist) {
+    const user = parseInt(postExist.userId);
+    if (user === getUser(req) || getUser(req) === 13) {
+      if (req.file) {
+        const filename = postExist.attachment.split("images")[1];
+        fs.unlink(`images/${filename}`, (err) => {
+          if (err) throw err;
+        });
+        const id = req.params.id;
+        const deletePost = await post.delete({
+          where: {
+            id: parseInt(id),
+          },
+        });
+        res.status(201).json({ deletePost });
       } else {
-        return res
-          .status(401)
-          .json({ error: "Vous n'avez pas les droit pour modifier ce post" });
+        const id = req.params.id;
+        const deletePost = await post.delete({
+          where: {
+            id: parseInt(id),
+          },
+        });
+        res.status(201).json({ deletePost });
       }
+    } else {
+      return res
+        .status(401)
+        .json({ error: "Vous n'avez pas les droit pour modifier ce post" });
     }
-
-
+  }
 };

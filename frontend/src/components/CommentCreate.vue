@@ -42,7 +42,12 @@ export default {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
-      );
+      ).then((response) => {
+          if (response.status == 200) {
+            this.emitter.emit('comment-created');
+            this.content = '';
+          }
+      });
     },
   },
 };

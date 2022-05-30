@@ -27,7 +27,7 @@
               Ajouter une image
               <input type="file" @change="onFileSelected" />
             </label>
-            <button type="submit" class="btn" @clik="postData">Publier</button>
+            <button type="submit" class="btn">Publier</button>
           </div>
         </form>
       </div>
@@ -75,7 +75,11 @@ export default {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
-        );
+        ).then((response) => {
+          if (response.status == 200) {
+            this.emitter.emit('post-refresh');
+          }
+        });
       } else {
         const formData = new FormData();
         formData.append("image", this.selectedFile, this.selectedFile.filename);
@@ -93,7 +97,11 @@ export default {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
-        );
+        ).then((response) => {
+          if (response.status == 200) {
+            this.emitter.emit('post-refresh');
+          }
+        });
       }
 
       console.log("ok");
