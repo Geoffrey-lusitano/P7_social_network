@@ -19,7 +19,6 @@
         <h2 class="card-title">{{ post.title }}</h2>
         <p class="card-content">
           {{ post.content }}
-          {{ post.id }}
         </p>
         <img :src="post.attachment" class="fullwidth" />
       </div>
@@ -114,6 +113,24 @@ export default {
 .card-date {
   color: rgba(0, 0, 0, 0.38);
   font-size: 12px;
+}
+.card-btn {
+  border-radius: 3px;
+  border: 1px solid #d05059;
+  background-color: #d05059;
+  color: #fff;
+  font-weight: bold;
+  padding: 15px 40px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
+  }
+  &:focus {
+    outline: none;
+  }
 }
 // BODY
 .card-body {

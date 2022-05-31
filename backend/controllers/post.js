@@ -119,19 +119,22 @@ exports.deletePost = async (req, res, next) => {
   });
   if (postExist) {
     const user = parseInt(postExist.userId);
+    console.log(postExist);
     if (user === getUser(req) || getUser(req) === 13) {
-      if (req.file) {
-        const filename = postExist.attachment.split("images")[1];
-        fs.unlink(`images/${filename}`, (err) => {
-          if (err) throw err;
+      if (postExist.attachment) {
+        const filename = postExist.attachment.split("/images/")[1];
+        console.log('filename', filename);
+        fs.unlink(`images/${filename}`, async() => {
+          const id = req.params.id;
+          const deletePost = await post.delete({
+            where: {
+              id: parseInt(id),
+            },
+            
+          });
+          res.status(201).json({ deletePost });
         });
-        const id = req.params.id;
-        const deletePost = await post.delete({
-          where: {
-            id: parseInt(id),
-          },
-        });
-        res.status(201).json({ deletePost });
+
       } else {
         const id = req.params.id;
         const deletePost = await post.delete({

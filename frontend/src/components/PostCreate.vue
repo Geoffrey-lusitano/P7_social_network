@@ -47,16 +47,14 @@ export default {
       selectdFile: null,
     };
   },
-  computed: {
-    publishedPost() {
-      return PostList;
-    },
-  },
+
   methods: {
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
       console.log(this.selectedFile);
+
     },
+
     async createPost() {
       const id = localStorage.getItem("userId");
       if (!this.selectedFile) {
@@ -66,46 +64,44 @@ export default {
         formData.append("userId", id);
         console.log("thisid", id);
         console.log(formData);
-        const response = await axios.post(
-          "http://localhost:3000/api/post",
-          formData,
-          {
+        const response = await axios
+          .post("http://localhost:3000/api/post", formData, {
             headers: {
               //'Content-Type': 'multipart/form-data',
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
-          }
-        ).then((response) => {
-          if (response.status == 200) {
-            this.emitter.emit('post-refresh');
-          }
-        });
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              this.emitter.emit("post-refresh");
+              this.content = "";
+              this.title = "";
+            }
+          });
       } else {
         const formData = new FormData();
         formData.append("image", this.selectedFile, this.selectedFile.filename);
         formData.append("title", this.title);
         formData.append("content", this.content);
         formData.append("userId", id);
-        console.log("thisid", id);
-        console.log(formData);
-        const response = await axios.post(
-          "http://localhost:3000/api/post",
-          formData,
-          {
+        const response = await axios
+          .post("http://localhost:3000/api/post", formData, {
             headers: {
               //'Content-Type': 'multipart/form-data',
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
-          }
-        ).then((response) => {
-          if (response.status == 200) {
-            this.emitter.emit('post-refresh');
-          }
-        });
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              this.emitter.emit("post-refresh");
+              this.content = "";
+              this.selectedFile = "";
+              this.title = "";
+            }
+          });
       }
 
       console.log("ok");
-      //this.$router.go(0);
     },
   },
 };

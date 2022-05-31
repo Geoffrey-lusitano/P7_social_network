@@ -8,7 +8,7 @@
           <h3 class="card-user">
             {{ comment.user.name }} {{ comment.user.last_name }}
           </h3>
-          <p class="card-content">{{ comment.id }} {{ comment.content }}</p>
+          <p class="card-content"> {{ comment.content }}</p>
         </div>
         <button
           v-if="user == 13"
@@ -96,7 +96,24 @@ h2 {
   display: flex;
   justify-content: space-between;
 }
-
+.card-btn {
+  border-radius: 3px;
+  border: 1px solid #d05059;
+  background-color: #d05059;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease-in;
+  &:active {
+    transform: scale(0.9);
+  }
+  &:focus {
+    outline: none;
+  }
+}
 .card-user {
   font-style: italic;
   font-size: 0.9rem;

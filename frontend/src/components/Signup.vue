@@ -44,8 +44,14 @@ export default {
                 password: this.password,
                 confirm_password: this.confirm_password
             });
-            //console.log(res);
-            this.$router.push('/login');            
+            const log = await axios.post('http://localhost:3000/api/auth/login', {
+                email: this.email,
+                password: this.password
+            });
+            localStorage.setItem('token', log.data.token);
+            localStorage.setItem('userId', log.data.userId);
+            this.$router.push('actu');
+        
         },
     },
 };
