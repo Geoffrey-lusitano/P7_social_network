@@ -16,7 +16,7 @@
           class="card-btn"
           @click="deleteComment"
         >
-          Supprimer le com
+          Supprimer
         </button>
       </div>
     </div>
@@ -102,6 +102,7 @@ h2 {
   font-weight: bold;
   font-size: 0.7rem;
   letter-spacing: 1px;
+  margin-bottom: 3px;
   text-transform: uppercase;
   cursor: pointer;
   transition: transform 0.1s ease-in;
@@ -122,5 +123,12 @@ h2 {
 .card-content {
   margin: 0;
   font-size: 0.9rem;
+}
+
+@media only screen and (max-width: 925px) {
+  .card-btn {
+    padding: 2px;
+    font-size: 0.7rem;
+  }
 }
 </style>

@@ -12,7 +12,7 @@
           :id="post.id"
           @click="deletePost"
         >
-          Supprimer le post
+          Supprimer
         </button>
       </header>
       <div class="card-body">
@@ -147,5 +147,12 @@ export default {
 }
 .card-body p:last-child {
   margin-bottom: 0;
+}
+
+@media only screen and (max-width: 925px) {
+  .card-btn {
+    padding: 10px 20px;
+    font-size: 0.7rem;
+  }
 }
 </style>
