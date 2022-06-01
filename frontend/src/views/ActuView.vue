@@ -105,6 +105,10 @@ button {
   max-width: 1050px;
   margin: 0 auto;
 }
+h1 {
+  display:flex;
+  justify-content: center;
+}
 
 @media only screen and (min-width: 925px) {
   .topbar {

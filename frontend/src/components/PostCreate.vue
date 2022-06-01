@@ -209,4 +209,11 @@ label {
   font-size: 0.6rem;
   text-transform: none;
 }
+
+@media only screen and (max-width: 925px) {
+  button, label {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+  }
+}
 </style>

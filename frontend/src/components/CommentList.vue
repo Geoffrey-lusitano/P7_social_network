@@ -85,13 +85,10 @@ h2 {
   color: rgba(208, 80, 89);
 }
 .card {
-  //border: 1px solid rgba(208,80,89,0.5);
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   padding: 0 10px;
-
-  //margin-bottom: 1px;
 }
 .card-body {
   display: flex;
@@ -119,7 +116,6 @@ h2 {
   font-style: italic;
   font-size: 0.9rem;
   color: rgba(208, 80, 89);
-
   margin: 0;
 }
 

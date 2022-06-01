@@ -10,12 +10,10 @@
             </form>
         </div>
     </div>
-
 </template>
 
 <script>
 import axios from "axios"
-
 export default {
   name: "Login",
   props: {
@@ -40,7 +38,6 @@ export default {
             localStorage.setItem('userId', response.data.userId);
             localStorage.setItem('admin', response.data.admin);
             this.$router.push('actu');
-
         },
     }
 };

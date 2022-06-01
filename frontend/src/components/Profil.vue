@@ -132,5 +132,19 @@ button, label {
     border: 1px solid #D05059;
 }
 
-
+@media only screen and (max-width: 925px) {
+    h1 {
+        display: flex;
+        justify-content: center;
+    }
+    .card {
+        display:flex;
+        flex-direction: column;
+    }
+    .form {
+        display: flex;
+        //align-items: center;
+        justify-content: center;
+    }
+}
 </style>
