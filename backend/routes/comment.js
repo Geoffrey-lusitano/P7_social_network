@@ -11,8 +11,6 @@ router.get('/', auth, commentCtrl.readComment);
 router.get('/:id', auth, commentCtrl.readOnComment);
 // Route pour créer un post
 router.post('/', auth, commentCtrl.createComment);
-// Route pour modifier un post
-router.put('/:id', auth, commentCtrl.modifyComment);
 // Route pour supprimer un post
 router.delete('/:id', auth, commentCtrl.deleteComment);
 

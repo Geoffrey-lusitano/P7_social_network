@@ -7,7 +7,7 @@
         </div>
         <div class="card-date"></div>
         <button
-          v-if="user == 13"
+          v-if="admin === 'true'"
           class="card-btn"
           :id="post.id"
           @click="deletePost"
@@ -48,6 +48,7 @@ export default {
     return {
       posts: [],
       user: localStorage.getItem("userId"),
+      admin: localStorage.getItem("admin"),
     };
   },
 

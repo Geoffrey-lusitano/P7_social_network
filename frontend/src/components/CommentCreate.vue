@@ -4,8 +4,7 @@
       <form @submit.prevent="createComment">
         <div class="card-body">
           <input type="text" class="card-content" v-model='content' />
-
-          <button type="submit" class="card-btn" @clik="createCommentData">
+          <button type="submit" class="card-btn" @clik="createCommentData" >
             Envoyer
           </button>
         </div>

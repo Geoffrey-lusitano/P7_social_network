@@ -4,14 +4,21 @@ const { comment } = new PrismaClient();
 const jwt = require("jsonwebtoken");
 
 function getUser(req) {
-    const token = req.headers.authorization.split(" ")[1];
-    // dechiffre le token a l'aide de la clé secrete et du token presant dans authorization
-    const decodedToken = jwt.verify(token, `${process.env.MY_TOKEN}`);
-    // Récuperation de l'userId presente dans l'objet decodedToken
-    const userId = decodedToken.userId;
-    return userId;
-  }
-
+  const token = req.headers.authorization.split(" ")[1];
+  // dechiffre le token a l'aide de la clé secrete et du token presant dans authorization
+  const decodedToken = jwt.verify(token, `${process.env.MY_TOKEN}`);
+  // Récuperation de l'userId presente dans l'objet decodedToken
+  const userId = decodedToken.userId;
+  return userId;
+}
+function getAdmin(req) {
+  const token = req.headers.authorization.split(" ")[1];
+  // dechiffre le token a l'aide de la clé secrete et du token presant dans authorization
+  const decodedToken = jwt.verify(token, `${process.env.MY_TOKEN}`);
+  // Récuperation de l'userId presente dans l'objet decodedToken
+  const admin = decodedToken.admin;
+  return admin;
+}
 exports.readComment = async (req, res, next) => {
   try {
     // const posts = await prisma.post.findMany({
@@ -44,9 +51,6 @@ exports.readOnComment = async (req, res, next) => {
 exports.createComment = async (req, res, next) => {
   try {
     const { content, userId, postId } = req.body;
-    console.log(content);
-    console.log(userId);
-    console.log(postId);
     const result = await comment.create({
       data: {
         content,
@@ -60,30 +64,6 @@ exports.createComment = async (req, res, next) => {
   }
 };
 
-exports.modifyComment = async (req, res, next) => {
-  try {
-    const { id, content, userId, postId } = req.body;
-    const commentExist = await comment.findUnique({
-      where: { id: id },
-    });
-    //res.status(200).json({postExist});
-    if (commentExist) {
-      const updateComment = await comment.update({
-        where: {
-          id: id,
-        },
-        data: {
-          content: content,
-          user: { connect: { id: userId } },
-          post: { connect: { id: postId } },
-        },
-      });
-      res.status(201).json({ updateComment });
-    }
-  } catch (err) {
-    res.status(400).json({ error: err });
-  }
-};
 // exports.deleteComment = async (req, res, next) => {
 //   try {
 //     const id = req.params.id;
@@ -103,14 +83,10 @@ exports.deleteComment = async (req, res, next) => {
   const commentExist = await comment.findUnique({
     where: { id: parseInt(id) },
   });
-  //res.status(200).json({postExist});
   if (commentExist) {
     console.log(commentExist);
     const user = parseInt(commentExist.userId);
-    console.log(user);
-    console.log("getuser", getUser(req));
-    console.log("userId", user);
-    if (user === getUser(req) || getUser(req) === 13) {
+    if (user === getUser(req) || getAdmin(req) === true) {
       const id = req.params.id;
       const deleteComment = await comment.delete({
         where: {

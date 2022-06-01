@@ -49,7 +49,6 @@ exports.signup = async (req, res) => {
       email: true,
     },
   });
-
   if (userExists) {
     return res.status(400).json({
       error: "Compte déjà existant",
@@ -89,6 +88,7 @@ exports.login = async (req, res) => {
       last_name: true,
       email: true,
       password: true,
+      isAdmin: true,
     },
   });
   if (!userExists) {
@@ -97,21 +97,27 @@ exports.login = async (req, res) => {
       .json({ error: "Merci de créer un compte avant de vous connecter" });
   }
   console.log(userExists.id);
+  console.log("Admin", userExists.isAdmin);
   //return res.status(200).json({user: userExists});
   // on compare le mdp entré avec le hash dans la base de données
   const valid = await bcrypt.compare(req.body.password, userExists.password);
   if (!valid) {
     return res.status(401).json({ error: "Mot de passe incorrect !" });
   }
-
   return res.status(200).json({
     test: "test",
     user: userExists,
+    admin: JSON.stringify(userExists.isAdmin),
     userId: JSON.stringify(userExists.id),
     // création d'un token grace a l'userid + la cle secrete avec une durée de validité de 24h
-    token: jwt.sign({ userId: userExists.id }, `${process.env.MY_TOKEN}`, {
-      expiresIn: "24h",
-    }),
+    token: jwt.sign(
+      { userId: userExists.id,
+        admin: userExists.isAdmin },
+      `${process.env.MY_TOKEN}`,
+      {
+        expiresIn: "24h",
+      }
+    ),
   });
 };
 

@@ -2,10 +2,6 @@
 const express = require('express');
 // Permet d'enregistrer des routes pour acceder aux middleware
 const router = express.Router();
-const auth = require('../middleware/auth');
-const { PrismaClient } = require('@prisma/client');
-const { user } = new PrismaClient();
-
 // Chargement du fichier controllers/user
 const userCtrl = require('../controllers/user');
 // Password-validator

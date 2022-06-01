@@ -50,6 +50,7 @@ export default {
             });
             localStorage.setItem('token', log.data.token);
             localStorage.setItem('userId', log.data.userId);
+            localStorage.setItem('admin', response.data.admin);
             this.$router.push('actu');
         
         },

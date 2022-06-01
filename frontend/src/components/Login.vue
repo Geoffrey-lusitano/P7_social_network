@@ -38,7 +38,7 @@ export default {
             });
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userId', response.data.userId);
-            //this.$store.dispatch('user', response.data.user);
+            localStorage.setItem('admin', response.data.admin);
             this.$router.push('actu');
 
         },

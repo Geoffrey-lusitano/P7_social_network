@@ -12,6 +12,14 @@ function getUser(req) {
   const userId = decodedToken.userId;
   return userId;
 }
+function getAdmin(req) {
+  const token = req.headers.authorization.split(" ")[1];
+  // dechiffre le token a l'aide de la clé secrete et du token presant dans authorization
+  const decodedToken = jwt.verify(token, `${process.env.MY_TOKEN}`);
+  // Récuperation de l'userId presente dans l'objet decodedToken
+  const admin = decodedToken.admin;
+  return admin;
+}
 exports.readPost = async (req, res, next) => {
   try {
     // const posts = await prisma.post.findMany({
@@ -59,82 +67,26 @@ exports.createPost = async (req, res, next) => {
   console.log("fincreatepost");
 };
 
-exports.modifyPost = async (req, res, next) => {
-  const { id, title, content, userId } = req.body;
-  const postExist = await post.findUnique({
-    where: { id: parseInt(id) },
-  });
-  //res.status(200).json({postExist});
-  if (postExist) {
-    console.log(postExist);
-    const user = parseInt(postExist.userId);
-    console.log(user);
-    console.log("getuser", getUser(req));
-    console.log("userId", user);
-    if (user === getUser(req)) {
-      if (req.file) {
-        const filename = postExist.attachment.split("images")[1];
-        fs.unlink(`images/${filename}`, (err) => {
-          if (err) throw err;
-        });
-        const updatePost = await post.update({
-          where: {
-            id: parseInt(id),
-          },
-          data: {
-            title: title,
-            content: content,
-            user: { connect: { id: parseInt(userId) } },
-            attachment: `${req.protocol}://${req.get("host")}/images/${
-              req.file.filename
-            }`,
-          },
-        });
-        res.status(201).json({ updatePost });
-      } else {
-        const updatePost = await post.update({
-          where: {
-            id: id,
-          },
-          data: {
-            title: title,
-            content: content,
-            user: { connect: { id: parseInt(userId) } },
-          },
-        });
-        res.status(201).json({ updatePost });
-      }
-    } else {
-      return res
-        .status(401)
-        .json({ error: "Vous n'avez pas les droit pour modifier ce post" });
-    }
-  }
-};
-
 exports.deletePost = async (req, res, next) => {
   const id = parseInt(req.params.id);
   const postExist = await post.findUnique({
     where: { id: parseInt(id) },
   });
   if (postExist) {
-    const user = parseInt(postExist.userId);
+    const userProperties = parseInt(postExist.userId);
     console.log(postExist);
-    if (user === getUser(req) || getUser(req) === 13) {
+    if (userProperties === getUser(req) || getAdmin(req) === true) {
       if (postExist.attachment) {
         const filename = postExist.attachment.split("/images/")[1];
-        console.log('filename', filename);
         fs.unlink(`images/${filename}`, async() => {
           const id = req.params.id;
           const deletePost = await post.delete({
             where: {
               id: parseInt(id),
             },
-            
           });
           res.status(201).json({ deletePost });
         });
-
       } else {
         const id = req.params.id;
         const deletePost = await post.delete({

@@ -2,7 +2,6 @@
 const express = require('express');
 // Variable app afin d'utiliser express
 const app = express();
-
 // CORS partage des ressources entre origines multiple, permet d'ajouter des en-têtes HTTP afin de permettre à un agent utilisateur d'accéder à des ressources d'un serveur situé sur une autre origine que le site courant.
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,7 +16,6 @@ const path = require('path');
 // Chargement du fichier contenant les variables d'env
 const dotenv = require('dotenv');
 const result = dotenv.config();
-
 // Chargement des routes
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');

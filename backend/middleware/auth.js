@@ -6,6 +6,7 @@ module.exports = (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         // dechiffre le token a l'aide de la clé secrete et du token presant dans authorization
         const decodedToken = jwt.verify(token, `${process.env.MY_TOKEN}`);
+        console.log('decodedtoken', decodedToken);
         // Récuperation de l'userId presente dans l'objet decodedToken
         const userId = decodedToken.userId;
         // Si il y a un userId dans la requete et que celui ci est différent de l'userId dans le token ou null

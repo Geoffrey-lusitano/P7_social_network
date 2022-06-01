@@ -11,7 +11,7 @@
           <p class="card-content"> {{ comment.content }}</p>
         </div>
         <button
-          v-if="user == 13"
+          v-if="admin === 'true'"
           :id="comment.id"
           class="card-btn"
           @click="deleteComment"
@@ -32,6 +32,7 @@ export default {
     return {
       comments: [],
       user: localStorage.getItem("userId"),
+      admin: localStorage.getItem("admin"),
     };
   },
   async created() {

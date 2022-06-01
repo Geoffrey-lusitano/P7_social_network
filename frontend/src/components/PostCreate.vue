@@ -25,8 +25,10 @@
           <div class="card-body-button">
             <label class="btn btn-secondary">
               Ajouter une image
-              <input type="file" @change="onFileSelected" />
+              <input type="file" ref="file" @change="onFileSelected" />
+              <span v-if="file" class="file">Image selectionné : {{ file.name }}</span>
             </label>
+
             <button type="submit" class="btn">Publier</button>
           </div>
         </form>
@@ -45,6 +47,7 @@ export default {
       content: "",
       userId: "",
       selectdFile: null,
+      file: "",
     };
   },
 
@@ -52,7 +55,7 @@ export default {
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
       console.log(this.selectedFile);
-
+      this.file = this.$refs.file.files[0];
     },
 
     async createPost() {
@@ -97,6 +100,7 @@ export default {
               this.content = "";
               this.selectedFile = "";
               this.title = "";
+              this.file = "";
             }
           });
       }
@@ -176,6 +180,8 @@ input {
 }
 button,
 label {
+  display:flex;
+  flex-direction: column;
   border-radius: 3px;
   border: 1px solid #0f3471;
   background-color: #0f3471;
@@ -197,5 +203,10 @@ label {
 .btn-secondary {
   background-color: #d05059;
   border: 1px solid #d05059;
+}
+.file {
+  font-weight: normal;
+  font-size: 0.6rem;
+  text-transform: none;
 }
 </style>
